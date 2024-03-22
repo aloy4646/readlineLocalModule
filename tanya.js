@@ -1,23 +1,28 @@
-const rl = require('./app.js');
+const readline = require('readline')
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+})
 
 const validator = require("validator")
 
-function pertanyaan(listPertanyaan, index, mapVariable){
+function pertanyaan(listPertanyaan, index, arrayJawaban){
     rl.question(listPertanyaan[index], (data) =>{
         if(!apakahValid(listPertanyaan[index], data)){
             console.log("Format tidak sesuai, silahkan coba lagi\n");
-            pertanyaan(listPertanyaan, index, mapVariable)
+            pertanyaan(listPertanyaan, index, arrayJawaban)
         }else{
-            setMapValue(listPertanyaan[index], mapVariable, data)
+            arrayJawaban.push(data)
             if(listPertanyaan.length > index+1){
                 index = index + 1
-                pertanyaan(listPertanyaan, index, mapVariable)
+                pertanyaan(listPertanyaan, index, arrayJawaban)
             }else{
                 console.log("===========================\n" + 
                     "Berikut ini adalah data diri anda\n" + 
-                    "Nama: " + mapVariable.get("nama") +
-                    "\nNomor handphone: " + mapVariable.get("nomorHandphone") +
-                    "\nEmail: " + mapVariable.get("email"))
+                    "Nama: " + arrayJawaban[0] +
+                    "\nNomor handphone: " + arrayJawaban[1] +
+                    "\nEmail: " + arrayJawaban[2])
                 rl.close()
                 return
             }
@@ -39,20 +44,6 @@ function apakahValid(pertanyaan, data){
     }    
 
     return false
-}
-
-function setMapValue(pertanyaan, mapVariable, data){
-    if(pertanyaan == "Siapa nama anda? "){
-        mapVariable.set("nama", data)
-    }
-
-    if(pertanyaan == "Berapa nomor handphone anda? "){
-        mapVariable.set("nomorHandphone", data)
-    }
-
-    if(pertanyaan == "Apa nama email anda? "){
-        mapVariable.set("email", data)
-    } 
 }
 
 module.exports = pertanyaan
