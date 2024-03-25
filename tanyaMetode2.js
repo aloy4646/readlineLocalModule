@@ -6,10 +6,12 @@ const rl = readline.createInterface({
 })
 
 function pertanyaan(validationConfig, index, arrayJawaban, validator, callback) {
-    //mengambil keys dari validationConfig (pertanyaan) menjadi sebuah array
+    //mengambil keys dari validationConfig (berisi pertanyaan) menjadi sebuah array
     const kumpulanPertanyaan = Object.keys(validationConfig)
     if (index >= kumpulanPertanyaan.length) {
         rl.close()
+
+        //menggunakan callback untuk mengembalikan arrayJawaban
         callback(arrayJawaban)
         return
     }
